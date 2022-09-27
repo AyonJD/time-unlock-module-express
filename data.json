@@ -1,0 +1,12 @@
+[
+    {"name": "Module One", "is_unlock": true, "is_complete": false},
+    {"name": "Module Two", "is_unlock": false, "is_complete": false},
+    {"name": "Module Three", "is_unlock": false, "is_complete": false},
+    {"name": "Module Four", "is_unlock": false, "is_complete": false},
+    {"name": "Module Five", "is_unlock": false, "is_complete": false},
+    {"name": "Module Six", "is_unlock": false, "is_complete": false},
+    {"name": "Module Seven", "is_unlock": false, "is_complete": false},
+    {"name": "Module Eight", "is_unlock": false, "is_complete": false},
+    {"name": "Module Nine", "is_unlock": false, "is_complete": false},
+    {"name": "Module Ten", "is_unlock": false, "is_complete": false}
+]

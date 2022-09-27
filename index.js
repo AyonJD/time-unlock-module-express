@@ -23,6 +23,27 @@ const run = async () => {
         console.log("Connected correctly to server");
         const db = client.db("module");
         const classesCollection = db.collection("classes");
+
+        app.get("/classes", async (req, res) => {
+            const cursor = classesCollection.find({});
+            const classes = await cursor.toArray();
+            res.send(classes);
+        });
+
+        //Update unlock status of a class by id after 24 hours
+        app.put("/classes/:id", async (req, res) => {
+            const id = req.params.id;
+            const unlockStatus = req.body.is_unlock;
+            const query = { _id: ObjectId(id) };
+            const updateDoc = {
+                $set: {
+                    is_unlock: unlockStatus,
+                },
+            };
+            const result = await classesCollection.updateOne(query, updateDoc);
+            res.json(result);
+        });
+
     } finally {
         // await client.close()
     }
