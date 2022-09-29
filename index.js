@@ -6,12 +6,12 @@ require("dotenv").config();
 const port = process.env.PORT || 5000;
 const app = express();
 
-const corsConfig = {
+const corsFonfig = {
     origin: true,
     Credentials: true,
 }
-app.use(cors(corsConfig));
-app.options("*", cors(corsConfig));
+app.use(cors(corsFonfig));
+app.options("*", cors(corsFonfig));
 app.use(bodyParser.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.y4mhh.mongodb.net/?retryWrites=true&w=majority`;
@@ -24,24 +24,29 @@ const run = async () => {
         const db = client.db("module");
         const classesCollection = db.collection("classes");
 
+        app.get("/", (req, res) => {
+            res.send("Server is Running");
+        });
+
         app.get("/classes", async (req, res) => {
             const cursor = classesCollection.find({});
             const classes = await cursor.toArray();
             res.send(classes);
         });
 
-        //Update unlock status of a class by id after 24 hours
+        
         app.put("/classes/:id", async (req, res) => {
             const id = req.params.id;
             const unlockStatus = req.body.is_unlock;
             const query = { _id: ObjectId(id) };
+            const classToUpdate = await classesCollection.findOne(query);
             const updateDoc = {
                 $set: {
                     is_unlock: unlockStatus,
                 },
             };
             const result = await classesCollection.updateOne(query, updateDoc);
-            res.json(result);
+            res.json(classToUpdate);
         });
 
     } finally {
@@ -49,3 +54,4 @@ const run = async () => {
     }
 }
 run().catch(console.dir);
+app.listen(port, () => console.log(`Listening on port ${port}`));
