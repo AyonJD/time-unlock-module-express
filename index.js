@@ -34,7 +34,7 @@ const run = async () => {
             res.send(classes);
         });
 
-        
+
         app.put("/classes/:id", async (req, res) => {
             const id = req.params.id;
             const unlockStatus = req.body.is_unlock;
@@ -46,8 +46,25 @@ const run = async () => {
                 },
             };
             const result = await classesCollection.updateOne(query, updateDoc);
-            res.json(classToUpdate);
+            res.json({data: classToUpdate, result: result, status: 200, message: "New Module Unlocked"});
         });
+
+        // Put api with req.query
+        app.put("/classes", async (req, res) => {
+            const id = req.query.id;
+            const completeStatus = req.body.is_complete;
+            console.log(id, completeStatus);
+            const query = { _id: ObjectId(id) };
+            const classToUpdate = await classesCollection.findOne(query);
+            const updateDoc = {
+                $set: {
+                    is_complete: completeStatus,
+                },
+            };
+            const result = await classesCollection.updateOne(query, updateDoc);
+            res.json({data: classToUpdate, result: result, status: "success"});
+        });
+
 
     } finally {
         // await client.close()
