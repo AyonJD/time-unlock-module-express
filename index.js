@@ -49,7 +49,6 @@ const run = async () => {
             res.json({data: classToUpdate, result: result, status: 200, message: "New Module Unlocked"});
         });
 
-        // Put api with req.query
         app.put("/classes", async (req, res) => {
             const id = req.query.id;
             const completeStatus = req.body.is_complete;
